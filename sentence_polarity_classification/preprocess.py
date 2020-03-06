@@ -15,7 +15,7 @@ else: #Python 2.7 imports
 
 #embeddings path
 DIR_PATH = os.getcwd()
-embeddingsPath = os.path.join(DIR_PATH, '../embeddings/vectors.txt')
+embeddingsPath = sys.argv[1] #os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 #Train, Dev, and Test files
 folder = 'data/'

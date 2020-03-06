@@ -130,4 +130,4 @@ test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=False)
 
 
 print("Dev-Accuracy: %.2f" % (dev_accuracy*100))
-print("Test-Accuracy: %.2f)" % (test_accuracy*100))
+print("Test-Accuracy: %.2f" % (test_accuracy*100))

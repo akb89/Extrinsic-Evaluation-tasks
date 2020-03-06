@@ -11,7 +11,7 @@ from keras.datasets import imdb
 from collections import defaultdict
 import keras
 import numpy as np
-import os
+import os, sys
 
 DIR_PATH = os.getcwd()
 max_features = 20000
@@ -19,7 +19,7 @@ maxlen = 80  # cut texts after this number of words (among top max_features most
 batch_size = 128
 
 embeddings_index = {}
-embed_path = os.path.join(DIR_PATH, '../embeddings/vectors.txt')
+embed_path = sys.argv[1] #os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 with open(embed_path) as f:
   for line in f:
