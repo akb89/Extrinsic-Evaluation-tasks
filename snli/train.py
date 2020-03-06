@@ -76,7 +76,7 @@ RNN = lambda *args, **kwargs: recurrent.LSTM(*args, **kwargs)
 LAYERS = 1
 USE_PRETRAIN_EMED = True
 TRAIN_EMBED = False
-EMBED_HIDDEN_SIZE = 50
+EMBED_HIDDEN_SIZE = 100
 SENT_HIDDEN_SIZE = 250
 BATCH_SIZE = 512
 PATIENCE = 4 # 8
@@ -100,7 +100,7 @@ print('Build model...')
 print('Vocab size =', VOCAB)
 
 embeddings_index = {}
-embed_path = os.path.join(DIR_PATH, 'embeddings/vectors.txt')
+embed_path = os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 with open(embed_path) as f:
   for line in f:

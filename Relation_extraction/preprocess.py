@@ -10,7 +10,8 @@ import pickle as pkl
 
 
 
-embeddingsPath = '/home/shashwath/ldt/Li-wiki201308_filtered/word_linear/skip/500d/vectors.txt'
+embeddingsPath = '/Users/akb/Github/Extrinsic-Evaluation-tasks/embeddings/vectors.txt'
+#embeddingsPath = 'This/is/a/test'
 
 folder = 'dataset/'
 files = [folder+'train.txt', folder+'test.txt']

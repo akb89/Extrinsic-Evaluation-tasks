@@ -14,7 +14,7 @@ else: #Python 2.7 imports
 
 #path where the pretrained embedding file is stored
 dir_path = os.getcwd()
-embeddingsPath = os.path.join(dir_path, 'embeddings/vectors.txt')
+embeddingsPath = os.path.join(dir_path, '../embeddings/vectors.txt')
 
 #Train, Dev, and Test files
 folder = 'data/'

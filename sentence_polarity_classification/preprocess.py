@@ -15,7 +15,7 @@ else: #Python 2.7 imports
 
 #embeddings path
 DIR_PATH = os.getcwd()
-embeddingsPath = os.path.join(DIR_PATH, 'embeddings/vectors.txt')
+embeddingsPath = os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 #Train, Dev, and Test files
 folder = 'data/'
@@ -60,14 +60,13 @@ def createMatrices(sentences, word2Idx):
 def readFile(filepath):
     sentences = []
     labels = []
-
-    for line in open(filepath):
-        splits = line.split()
-        label = int(splits[0])
-        words = splits[1:]
-
-        labels.append(label)
-        sentences.append(words)
+    with open(filepath, 'r', encoding='utf-8') as input_stream:
+        for line in input_stream:
+            splits = line.split()
+            label = int(splits[0])
+            words = splits[1:]
+            labels.append(label)
+            sentences.append(words)
 
     print(filepath, len(sentences), "sentences")
 

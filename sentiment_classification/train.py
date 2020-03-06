@@ -1,5 +1,5 @@
 '''Trains an LSTM model on the IMDB sentiment classification task.
-Adapted from 
+Adapted from
 '''
 from __future__ import print_function
 
@@ -19,7 +19,7 @@ maxlen = 80  # cut texts after this number of words (among top max_features most
 batch_size = 128
 
 embeddings_index = {}
-embed_path = os.path.join(DIR_PATH, 'embeddings/vectors.txt')
+embed_path = os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 with open(embed_path) as f:
   for line in f:
