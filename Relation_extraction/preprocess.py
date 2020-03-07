@@ -10,11 +10,12 @@ import pickle as pkl
 
 
 
-embeddingsPath = sys.argv[1] 
+embeddingsPath = sys.argv[1]
+gitDir=sys.argv[2]
 #embeddingsPath = 'This/is/a/test'
 
-folder = 'dataset/'
-files = [folder+'train.txt', folder+'test.txt']
+folder = os.path.join(gitDir, 'Relation_extraction', 'dataset')
+files = [os.path.join(folder, 'train.txt'), os.path.join(folder, 'test.txt')]
 
 #Mapping of the labels to integers
 labelsMapping = {'Other':0,

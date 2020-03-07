@@ -30,8 +30,8 @@ runner() {
 
     echo $BASE > $MODEL
 
-    python3 $GITDIR/Relation_extraction/preprocess.py $1 > /dev/null
-    python3 $GITDIR/Relation_extraction/train_cnn.py $1 > $RE
+    python3 $GITDIR/Relation_extraction/preprocess.py $1 $3 > /dev/null
+    python3 $GITDIR/Relation_extraction/train_cnn.py $1 $3 > $RE
 
     python3 $GITDIR/sentence_polarity_classification/preprocess.py $1 > /dev/null
     python3 $GITDIR/sentence_polarity_classification/train.py $1 > $SPC
