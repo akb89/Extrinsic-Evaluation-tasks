@@ -5,10 +5,11 @@ GITDIR=$3
 OUT=$4
 JOBS=1
 OUTDIR=/tmp/dl-exe-$(date +%Y-%m-%dT%H%M%S)
+PYTHON=python3
 
 usage(){
 cat << EOF
-usage $0 [-j JOBS_NUMBER] [-o OUTPUT_DIRECTORY] -v VECTORS_DIRECTORY -g GIT_DIRECTORY -s SCORES_FILE 
+usage $0 [-j JOBS_NUMBER] [-o OUTPUT_DIRECTORY] [-p PYTHON_EXECUTABLE] -v VECTORS_DIRECTORY -g GIT_DIRECTORY -s SCORES_FILE 
 
 Run the training for the 5 tasks with j models in parallel 
 
@@ -22,7 +23,8 @@ Options
 -o OUTPUT_DIRECTORY  The directory where are stored the log files 
                      and the intermediate scores. Can be safely 
                      remove when everything is finished. (default /tmp/dl-exe-{date}) 
-                     We do not clean up by ourselves 
+                     We do not clean up by ourselves
+-p PYTHON_EXECUTABLE Path to the python3 executable (default python3)
 EOF
 }
 
@@ -53,18 +55,18 @@ runner() {
 
     echo $BASE > $MODEL
 
-    python3 $GITDIR/Relation_extraction/preprocess.py $1 $GITDIR > /dev/null
-    python3 $GITDIR/Relation_extraction/train_cnn.py $1 $GITDIR > $RE
+    $PYTHON $GITDIR/Relation_extraction/preprocess.py $1 $GITDIR > /dev/null
+    $PYTHON $GITDIR/Relation_extraction/train_cnn.py $1 $GITDIR > $RE
 
-    python3 $GITDIR/sentence_polarity_classification/preprocess.py $1 $GITDIR > /dev/null
-    python3 $GITDIR/sentence_polarity_classification/train.py $1 $GITDIR > $SPC
+    $PYTHON $GITDIR/sentence_polarity_classification/preprocess.py $1 $GITDIR > /dev/null
+    $PYTHON $GITDIR/sentence_polarity_classification/train.py $1 $GITDIR > $SPC
 
-    python3 $GITDIR/sentiment_classification/train.py $1 > $SC
+    $PYTHON $GITDIR/sentiment_classification/train.py $1 > $SC
 
-    python3 $GITDIR/snli/train.py $1 $GITDIR > $SNLI
+    $PYTHON $GITDIR/snli/train.py $1 $GITDIR > $SNLI
 
-    python3 $GITDIR/subjectivity_classification/preprocess.py $1 $GITDIR > /dev/null
-    python3 $GITDIR/subjectivity_classification/cnn.py $1 $GITDIR > $SUC
+    $PYTHON $GITDIR/subjectivity_classification/preprocess.py $1 $GITDIR > /dev/null
+    $PYTHON $GITDIR/subjectivity_classification/cnn.py $1 $GITDIR > $SUC
 
     grep "Accuracy:" $RE | perl -pe "s/Accuracy: //g" | perl -pe "s/ \(max: .+\)//g" > $RE_SCORE
     grep "Test-Accuracy:" $SPC | perl -pe "s/Test-Accuracy: //g" > $SPC_SCORE
