@@ -2,6 +2,7 @@ from __future__ import print_function
 from functools import reduce
 import json
 import os
+import sys
 import re
 import tarfile
 import tempfile
@@ -100,7 +101,7 @@ print('Build model...')
 print('Vocab size =', VOCAB)
 
 embeddings_index = {}
-embed_path = os.path.join(DIR_PATH, '../embeddings/vectors.txt')
+embed_path = sys.argv[1]#os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 with open(embed_path) as f:
   for line in f:
@@ -158,4 +159,4 @@ model.fit([training[0], training[1]], training[2], batch_size=BATCH_SIZE, nb_epo
 model.load_weights(tmpfn)
 
 loss, acc = model.evaluate([test[0], test[1]], test[2], batch_size=BATCH_SIZE)
-print('Test loss / test accuracy = {:.4f} / {:.4f}'.format(loss, acc))
+print('Test loss: {:.4f} / Test accuracy: {:.4f}'.format(loss, acc))

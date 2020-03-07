@@ -10,7 +10,7 @@ import pickle as pkl
 
 
 
-embeddingsPath = '/Users/akb/Github/Extrinsic-Evaluation-tasks/embeddings/vectors.txt'
+embeddingsPath = sys.argv[1] 
 #embeddingsPath = 'This/is/a/test'
 
 folder = 'dataset/'

@@ -4,7 +4,7 @@ The file preprocesses the data/train.txt, data/dev.txt and data/test.txt from se
 from __future__ import print_function
 import numpy as np
 import gzip
-import os
+import os, sys
 
 import sys
 if (sys.version_info > (3, 0)):
@@ -14,7 +14,7 @@ else: #Python 2.7 imports
 
 #path where the pretrained embedding file is stored
 dir_path = os.getcwd()
-embeddingsPath = os.path.join(dir_path, '../embeddings/vectors.txt')
+embeddingsPath = sys.argv[1] #os.path.join(dir_path, '../embeddings/vectors.txt')
 
 #Train, Dev, and Test files
 folder = 'data/'
