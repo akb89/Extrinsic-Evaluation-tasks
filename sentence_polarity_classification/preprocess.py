@@ -16,12 +16,11 @@ else: #Python 2.7 imports
 #embeddings path
 DIR_PATH = os.getcwd()
 embeddingsPath = sys.argv[1] #os.path.join(DIR_PATH, '../embeddings/vectors.txt')
+gitDir = sys.argv[2]
 
 #Train, Dev, and Test files
-folder = 'data/'
-files = [folder+'train.txt',  folder+'dev.txt', folder+'test.txt']
-
-
+folder = os.path.join(gitDir, 'data')
+files = [os.path.join(folder, 'train.txt'),  os.path.join(folder, 'dev.txt'), os.path.join(folder, 'test.txt')]
 
 
 def createMatrices(sentences, word2Idx):
@@ -81,7 +80,7 @@ def readFile(filepath):
 #      Start of the preprocessing
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 
-outputFilePath = 'pkl/data.pkl.gz'
+outputFilePath = os.path.join(folder, 'pkl', 'data.pkl.gz')
 
 
 trainDataset = readFile(files[0])

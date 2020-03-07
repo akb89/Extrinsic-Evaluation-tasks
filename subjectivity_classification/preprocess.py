@@ -15,10 +15,11 @@ else: #Python 2.7 imports
 #path where the pretrained embedding file is stored
 dir_path = os.getcwd()
 embeddingsPath = sys.argv[1] #os.path.join(dir_path, '../embeddings/vectors.txt')
+gitDir = sys.argv[2]
 
 #Train, Dev, and Test files
-folder = 'data/'
-files = [folder+'train.txt',  folder+'dev.txt', folder+'test.txt']
+folder = os.path.join(gitDir, 'subjectivity_classification', 'data')
+files = [os.path.join(folder, 'train.txt'),  os.path.join(folder, 'dev.txt'), os.path.join(folder, 'test.txt')]
 
 
 
@@ -81,7 +82,7 @@ def readFile(filepath):
 #      Start of the preprocessing
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 
-outputFilePath = 'pkl/data.pkl.gz'
+outputFilePath = os.path.join(folder, 'pkl', 'data.pkl.gz')
 
 
 trainDataset = readFile(files[0])

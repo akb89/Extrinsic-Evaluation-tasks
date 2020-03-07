@@ -58,9 +58,11 @@ def get_data(fn, limit=None):
 
   return left, right, Y
 
-training = get_data('snli_1.0_train.jsonl')
-validation = get_data('snli_1.0_dev.jsonl')
-test = get_data('snli_1.0_test.jsonl')
+gitDir = sys.argv[2]
+folder = os.path.join(gitDir, 'snli')
+training = get_data(os.path.join(folder, 'snli_1.0_train.jsonl'))
+validation = get_data(os.path.join(folder, 'snli_1.0_dev.jsonl'))
+test = get_data(os.path.join(folder, 'snli_1.0_test.jsonl'))
 
 tokenizer = Tokenizer(lower=False, filters='')
 tokenizer.fit_on_texts(training[0] + training[1])
