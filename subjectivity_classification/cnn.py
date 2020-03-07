@@ -25,8 +25,9 @@ def wordIdxLookup(word, word_idx_map):
 
 
 
-
-data = pkl.load(gzip.open("pkl/data.pkl.gz","rb"))
+gitDir = sys.argv[2]
+folder = os.path.join(gitDir, 'subjectivity_classification')
+data = pkl.load(gzip.open(os.path.join(folder, 'pkl', 'data.pkl.gz'),"rb"))
 print("data loaded!")
 
 
