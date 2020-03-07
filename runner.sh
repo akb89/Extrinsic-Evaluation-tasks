@@ -106,10 +106,6 @@ do
     esac
 done;
 
-echo $VECTORS
-echo $OUTDIR
-echo $OUT
-
 export -f runner
 echo -e "MODEL\tRELATION_EXTRACTION\tSENTENCE_POLARITY\tSENTIMENT\tSNLI\tSUBJECTIVITY" > ${OUT}
 env_parallel -j ${JOBS} runner ::: ${VECTORS} >> ${OUT}
