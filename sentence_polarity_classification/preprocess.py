@@ -19,8 +19,8 @@ embeddingsPath = sys.argv[1] #os.path.join(DIR_PATH, '../embeddings/vectors.txt'
 gitDir = sys.argv[2]
 
 #Train, Dev, and Test files
-folder = os.path.join(gitDir, 'sentence_polarity_classification', 'data')
-files = [os.path.join(folder, 'train.txt'),  os.path.join(folder, 'dev.txt'), os.path.join(folder, 'test.txt')]
+folder = os.path.join(gitDir, 'sentence_polarity_classification')
+files = [os.path.join(folder, 'data', 'train.txt'),  os.path.join(folder, 'data', 'dev.txt'), os.path.join(folder, 'data', 'test.txt')]
 
 
 def createMatrices(sentences, word2Idx):
