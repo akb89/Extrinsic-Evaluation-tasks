@@ -30,18 +30,18 @@ runner() {
 
     echo $BASE > $MODEL
 
-    python3 $GITDIR/Relation_extraction/preprocess.py $1 $3 > /dev/null
-    python3 $GITDIR/Relation_extraction/train_cnn.py $1 $3 > $RE
+    python3 $GITDIR/Relation_extraction/preprocess.py $1 $GITDIR > /dev/null
+    python3 $GITDIR/Relation_extraction/train_cnn.py $1 $GITDIR > $RE
 
-    python3 $GITDIR/sentence_polarity_classification/preprocess.py $1 $3 > /dev/null
-    python3 $GITDIR/sentence_polarity_classification/train.py $1 $3 > $SPC
+    python3 $GITDIR/sentence_polarity_classification/preprocess.py $1 $GITDIR > /dev/null
+    python3 $GITDIR/sentence_polarity_classification/train.py $1 $GITDIR > $SPC
 
     python3 $GITDIR/sentiment_classification/train.py $1 > $SC
 
-    python3 $GITDIR/snli/train.py $1 $3 > $SNLI
+    python3 $GITDIR/snli/train.py $1 $GITDIR > $SNLI
 
-    python3 $GITDIR/subjectivity_classification/preprocess.py $1 $3 > /dev/null
-    python3 $GITDIR/subjectivity_classification/cnn.py $1 $3 > $SUC
+    python3 $GITDIR/subjectivity_classification/preprocess.py $1 $GITDIR > /dev/null
+    python3 $GITDIR/subjectivity_classification/cnn.py $1 $GITDIR > $SUC
 
     grep "Accuracy:" $RE | perl -pe "s/Accuracy: //g" | perl -pe "s/ \(max: .+\)//g" > $RE_SCORE
     grep "Test-Accuracy:" $SPC | perl -pe "s/Test-Accuracy: //g" > $SPC_SCORE
