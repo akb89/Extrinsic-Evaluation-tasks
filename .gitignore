@@ -2,3 +2,6 @@ embeddings
 __pycache__
 snli/*.jsonl
 snli/*.txt
+xp.txt
+bak/
+tmp/
