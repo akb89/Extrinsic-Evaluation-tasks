@@ -1,11 +1,11 @@
 #! /bin/bash
 . $(which env_parallel.bash)
-VECTORS=$(find $1 -type f -name '*.txt')
-GITDIR=$3
-OUT=$4
 JOBS=1
 OUTDIR=/tmp/dl-exe-$(date +%Y-%m-%dT%H%M%S)
 PYTHON=python3
+VECTORS=
+GITDIR=
+OUT=
 
 usage(){
 cat << EOF
@@ -30,7 +30,7 @@ EOF
 
 runner() {
     NAME=$(basename $1)
-    BASE="${filename%.*}"
+    BASE="${NAME%.*}"
     
     mkdir -p ${OUTDIR}/${BASE}
 
@@ -78,7 +78,7 @@ runner() {
     cat $GLOBAL_SCORES
 }
 
-while getopts "hjopv:s:g:" OPTION
+while getopts "hjopvsg" OPTION
 do
     case $OPTION in 
         h)
@@ -98,13 +98,17 @@ do
             GITDIR=$OPTARG
             ;;
         v)
-            VECTORS=$OPTARG
+            VECTORS=$(find $OPTARG -type f -name '*.txt')
             ;;
         s)
             OUT=$OPTARG
             ;;
     esac
 done;
+
+echo $VECTORS
+echo $OUTDIR
+echo $OUT
 
 export -f runner
 echo -e "MODEL\tRELATION_EXTRACTION\tSENTENCE_POLARITY\tSENTIMENT\tSNLI\tSUBJECTIVITY" > ${OUT}
