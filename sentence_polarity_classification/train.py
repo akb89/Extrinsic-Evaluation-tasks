@@ -6,7 +6,7 @@ from __future__ import print_function
 import numpy as np
 
 import gzip
-import sys
+import sys, os
 if (sys.version_info > (3, 0)):
     import pickle as pkl
 else: #Python 2.7 imports
@@ -27,8 +27,9 @@ def wordIdxLookup(word, word_idx_map):
 
 
 
-
-data = pkl.load(gzip.open("pkl/data.pkl.gz","rb"))
+gitDir = sys.argv[2]
+folder = os.path.join(gitDir, 'sentence_polarity_classification')
+data = pkl.load(gzip.open(os.path.join(folder, 'pkl', 'data.pkl.gz'),"rb"))
 print("data loaded!")
 
 
