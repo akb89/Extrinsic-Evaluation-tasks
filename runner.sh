@@ -78,7 +78,7 @@ runner() {
     cat $GLOBAL_SCORES
 }
 
-while getopts "hjov:s:g:" OPTION
+while getopts "hjopv:s:g:" OPTION
 do
     case $OPTION in 
         h)
@@ -87,6 +87,9 @@ do
             ;;
         j)
             JOBS=$OPTARG
+            ;;
+        p)
+            PYTHON=$OPTARG
             ;;
         o)
             OUTDIR=$OPTARG 
