@@ -5,3 +5,4 @@ snli/*.txt
 xp.txt
 bak/
 tmp/
+*.tsv

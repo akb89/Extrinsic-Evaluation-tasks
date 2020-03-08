@@ -79,7 +79,7 @@ RNN = lambda *args, **kwargs: recurrent.LSTM(*args, **kwargs)
 LAYERS = 1
 USE_PRETRAIN_EMED = True
 TRAIN_EMBED = False
-EMBED_HIDDEN_SIZE = sys.argv[3]
+# EMBED_HIDDEN_SIZE = 100
 SENT_HIDDEN_SIZE = 250
 BATCH_SIZE = 512
 PATIENCE = 4 # 8
@@ -89,8 +89,6 @@ DP = 0.5
 L2 = 4e-6
 ACTIVATION = 'relu'
 OPTIMIZER = 'rmsprop'
-print('RNN / Embed / Sent = {}, {}, {}'.format(RNN, EMBED_HIDDEN_SIZE, SENT_HIDDEN_SIZE))
-print('GloVe / Trainable Word Embeddings = {}, {}'.format(USE_PRETRAIN_EMED, TRAIN_EMBED))
 
 to_seq = lambda X: pad_sequences(tokenizer.texts_to_sequences(X), maxlen=MAX_LEN)
 prepare_data = lambda data: (to_seq(data[0]), to_seq(data[1]), data[2])
@@ -110,7 +108,11 @@ with open(embed_path) as f:
     values = line.split(' ')
     word = values[0]
     coefs = np.asarray(values[1:], dtype='float32')
+    EMBED_HIDDEN_SIZE = len(coefs)
     embeddings_index[word] = coefs
+
+print('RNN / Embed / Sent = {}, {}, {}'.format(RNN, EMBED_HIDDEN_SIZE, SENT_HIDDEN_SIZE))
+print('GloVe / Trainable Word Embeddings = {}, {}'.format(USE_PRETRAIN_EMED, TRAIN_EMBED))
 
 # prepare embedding matrix
 embedding_matrix = np.zeros((VOCAB, EMBED_HIDDEN_SIZE))
