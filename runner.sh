@@ -3,13 +3,14 @@
 JOBS=1
 OUTDIR=/tmp/dl-exe-$(date +%Y-%m-%dT%H%M%S)
 PYTHON=python3
+TASKS=re,spc,sc,suc,snli
 VECTORS=
 GITDIR=
 OUT=
 
 usage(){
 cat << EOF
-usage $0 [-j JOBS_NUMBER] [-o OUTPUT_DIRECTORY] [-p PYTHON_EXECUTABLE] -v VECTORS_DIRECTORY -g GIT_DIRECTORY -s SCORES_FILE
+usage $0 [-j JOBS_NUMBER] [-o OUTPUT_DIRECTORY] [-p PYTHON_EXECUTABLE] [-t TASKS] -v VECTORS_DIRECTORY -g GIT_DIRECTORY -s SCORES_FILE
 
 Run the training for the 5 tasks with j models in parallel
 
@@ -25,6 +26,7 @@ Options
                      remove when everything is finished. (default /tmp/dl-exe-{date})
                      We do not clean up by ourselves
 -p PYTHON_EXECUTABLE Path to the python3 executable (default python3)
+-t TASKS            Comma separated list of tasks (default = re,spc,sc,suc,snli)
 EOF
 }
 
@@ -53,32 +55,47 @@ runner() {
 
     GLOBAL_SCORES=${OUTDIR}/${BASE}/global_scores.${BASE}.txt
 
+    touch $RE_SCORE
+    touch $SPC_SCORE
+    touch $SC_SCORE
+    touch $SNLI_SCORE
+    touch $SUC_SCORE
+
     echo $BASE > $MODEL
+    
+    if echo $TASKS | grep -oi "re"; then
+        $PYTHON $GITDIR/Relation_extraction/preprocess.py $1 $GITDIR > /dev/null
+        $PYTHON $GITDIR/Relation_extraction/train_cnn.py $1 $GITDIR > $RE
+        grep "Accuracy:" $RE | perl -pe "s/Accuracy: //g" | perl -pe "s/ \(max: .+\)//g" > $RE_SCORE
+    fi
+    
+    if echo $TASKS | grep -oi "spc"; then
+        $PYTHON $GITDIR/sentence_polarity_classification/preprocess.py $1 $GITDIR > /dev/null
+        $PYTHON $GITDIR/sentence_polarity_classification/train.py $1 $GITDIR > $SPC
+        grep "Test-Accuracy:" $SPC | perl -pe "s/Test-Accuracy: //g" > $SPC_SCORE
+    fi
+    
+    if echo $TASKS | grep -oi "spc"; then
+        $PYTHON $GITDIR/sentiment_classification/train.py $1 > $SC
+        grep "Test accuracy: " $SC | perl -pe "s/Test accuracy: //g" > $SC_SCORE
+    fi
 
-    # $PYTHON $GITDIR/Relation_extraction/preprocess.py $1 $GITDIR > /dev/null
-    # $PYTHON $GITDIR/Relation_extraction/train_cnn.py $1 $GITDIR > $RE
-    #
-    # $PYTHON $GITDIR/sentence_polarity_classification/preprocess.py $1 $GITDIR > /dev/null
-    # $PYTHON $GITDIR/sentence_polarity_classification/train.py $1 $GITDIR > $SPC
-    #
-    # $PYTHON $GITDIR/sentiment_classification/train.py $1 > $SC
+    if echo $TASKS | grep -oi "snli"; then
+        $PYTHON $GITDIR/snli/train.py $1 $GITDIR > $SNLI
+        grep "Test loss" $SNLI | perl -pe "s/Test loss: .+\/ //g" | perl -pe "s/Test accuracy: //g" > $SNLI_SCORE
+    fi
 
-    $PYTHON $GITDIR/snli/train.py $1 $GITDIR > $SNLI
-
-    # $PYTHON $GITDIR/subjectivity_classification/preprocess.py $1 $GITDIR > /dev/null
-    # $PYTHON $GITDIR/subjectivity_classification/cnn.py $1 $GITDIR > $SUC
-
-    # grep "Accuracy:" $RE | perl -pe "s/Accuracy: //g" | perl -pe "s/ \(max: .+\)//g" > $RE_SCORE
-    # grep "Test-Accuracy:" $SPC | perl -pe "s/Test-Accuracy: //g" > $SPC_SCORE
-    # grep "Test accuracy: " $SC | perl -pe "s/Test accuracy: //g" > $SC_SCORE
-    grep "Test loss" $SNLI | perl -pe "s/Test loss: .+\/ //g" | perl -pe "s/Test accuracy: //g" > $SNLI_SCORE
-    # grep "Test-Accuracy:" $SUC | perl -pe "s/Test-Accuracy: //g" > $SUC_SCORE
+    if echo $TASKS | grep -oi "suc"; then
+        $PYTHON $GITDIR/subjectivity_classification/preprocess.py $1 $GITDIR > /dev/null
+        $PYTHON $GITDIR/subjectivity_classification/cnn.py $1 $GITDIR > $SUC
+        grep "Test-Accuracy:" $SUC | perl -pe "s/Test-Accuracy: //g" > $SUC_SCORE
+    fi
 
     paste $MODEL $RE_SCORE $SPC_SCORE $SC_SCORE $SNLI_SCORE $SUC_SCORE > $GLOBAL_SCORES
     cat $GLOBAL_SCORES
 }
 
-while getopts "hj:o:p:v:s:g:" OPTION
+while getopts "ht:j:o:p:v:s:g:" OPTION
 do
     case $OPTION in
         h)
@@ -96,6 +113,9 @@ do
             ;;
         g)
             GITDIR=$OPTARG
+            ;;
+        t)
+            TASKS=$OPTARG
             ;;
         v)
             VECTORS=$(find $OPTARG -type f -name '*.txt')
