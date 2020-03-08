@@ -30,11 +30,11 @@ with open(embed_path) as f:
 embedding_dim = coefs.shape[0]
 print(embedding_dim)
 
-print(embedding_dim)
 index_dict = keras.datasets.imdb.get_word_index()
 n_vocab = len(index_dict) + 1
 oov_count = 0
 embedding_weights = np.zeros((n_vocab, embedding_dim))
+embeddings_index['unk'] = np.random.uniform(-0.25, 0.25, len(embedding_dim)-1)
 for word, index in index_dict.items():
     word = word.lower()
     if word in embeddings_index:

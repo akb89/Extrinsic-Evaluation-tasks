@@ -21,7 +21,7 @@ from keras.preprocessing import sequence
 batch_size = 16
 nb_filter = 100
 filter_length = 3
-hidden_dims = 100
+# hidden_dims = 100
 nb_epoch = 100
 position_dims = 50
 
