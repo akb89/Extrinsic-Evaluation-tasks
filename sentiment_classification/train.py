@@ -23,7 +23,7 @@ embed_path = sys.argv[1] #os.path.join(DIR_PATH, '../embeddings/vectors.txt')
 
 with open(embed_path) as f:
   for line in f:
-    values = line.split(' ')
+    values = line.strip().split(' ')
     word = values[0]
     coefs = np.asarray(values[1:], dtype='float32')
     embeddings_index[word] = coefs
@@ -31,17 +31,20 @@ embedding_dim = coefs.shape[0]
 print(embedding_dim)
 
 index_dict = keras.datasets.imdb.get_word_index()
-n_vocab = len(index_dict) + 1
+n_vocab = len(index_dict) + 2
+print(n_vocab)
 oov_count = 0
 embedding_weights = np.zeros((n_vocab, embedding_dim))
-embeddings_index['unk'] = np.random.uniform(-0.25, 0.25, len(embedding_dim)-1)
+random_vec = np.random.uniform(-0.25, 0.25, embedding_dim)
+
 for word, index in index_dict.items():
     word = word.lower()
     if word in embeddings_index:
         embedding_weights[index,:] = embeddings_index[word]
     else:
         oov_count += 1
-        embedding_weights[index,:] = embeddings_index['unk']
+        #embedding_weights[index,:] = embeddings_index['unk']
+        embedding_weights[index,:] = random_vec
 
 print('Loading data...')
 (x_train, y_train), (x_test, y_test) = imdb.load_data()
