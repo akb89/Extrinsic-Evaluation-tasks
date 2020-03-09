@@ -62,20 +62,20 @@ runner() {
     touch $SUC_SCORE
 
     echo $BASE > $MODEL
-    
+
     if echo $TASKS | grep -oi "re"; then
         $PYTHON $GITDIR/Relation_extraction/preprocess.py $1 $GITDIR > /dev/null
         $PYTHON $GITDIR/Relation_extraction/train_cnn.py $1 $GITDIR > $RE
         grep "Accuracy:" $RE | perl -pe "s/Accuracy: //g" | perl -pe "s/ \(max: .+\)//g" > $RE_SCORE
     fi
-    
+
     if echo $TASKS | grep -oi "spc"; then
         $PYTHON $GITDIR/sentence_polarity_classification/preprocess.py $1 $GITDIR > /dev/null
         $PYTHON $GITDIR/sentence_polarity_classification/train.py $1 $GITDIR > $SPC
         grep "Test-Accuracy:" $SPC | perl -pe "s/Test-Accuracy: //g" > $SPC_SCORE
     fi
-    
-    if echo $TASKS | grep -oi "spc"; then
+
+    if echo $TASKS | grep -oi "sc"; then
         $PYTHON $GITDIR/sentiment_classification/train.py $1 > $SC
         grep "Test accuracy: " $SC | perl -pe "s/Test accuracy: //g" > $SC_SCORE
     fi
